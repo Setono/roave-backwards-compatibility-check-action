@@ -1,0 +1,14 @@
+name: "Check your backwards compatibility"
+author: "Joachim Løvgaard"
+description: "Will use Roaves backwards compatibility checker to check your package"
+
+branding:
+    icon: "download"
+    color: "purple"
+
+runs:
+    using: "composite"
+    steps:
+        -   name: "Install Backwards Compatibility Checker"
+            shell: "bash"
+            run: "composer global require --no-update roave/backward-compatibility-check && composer global update && composer global show | grep backward-compatibility-check"
