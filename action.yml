@@ -15,4 +15,4 @@ runs:
 
         -   name: "Check for BC breaks"
             shell: "bash"
-            run: "vendor/bin/roave-backward-compatibility-check"
+            run: "composer roave-backward-compatibility-check"
