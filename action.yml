@@ -1,4 +1,4 @@
-name: "Check your backwards compatibility"
+name: "Check backwards compatibility of your PHP package"
 author: "Joachim Løvgaard"
 description: "Will use Roaves backwards compatibility checker to check your package"
 
