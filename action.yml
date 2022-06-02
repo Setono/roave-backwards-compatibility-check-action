@@ -1,10 +1,26 @@
+# See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions
+
 name: "Check backwards compatibility of your PHP package"
 author: "Joachim Løvgaard"
 description: "Will use Roaves backwards compatibility checker to check your package"
 
 branding:
-    icon: "download"
-    color: "purple"
+    icon: "alert-circle"
+    color: "red"
+
+inputs:
+    format:
+        description: "The format of the output (default: github-action)"
+        required: true
+        default: "github-actions"
+    from:
+        description: "Git reference for the base version of the library, which is considered \"stable\""
+        required: false
+        default: ""
+    to:
+        description: "Git reference for the new version of the library, which is verified against \"from\" for BC breaks (default: HEAD)"
+        required: true
+        default: "HEAD"
 
 runs:
     using: "composite"
@@ -13,6 +29,11 @@ runs:
             shell: "bash"
             run: "composer global require --no-update roave/backward-compatibility-check && composer global update && composer global show | grep backward-compatibility-check"
 
+        -   name: "Resolve 'from' tag"
+            id: "from-tag"
+            shell: "bash"
+            run: "${GITHUB_ACTION_PATH}/bin/tag_from.sh \"${{ inputs.from }}\""
+        
         -   name: "Check for BC breaks"
             shell: "bash"
-            run: "roave-backward-compatibility-check"
+            run: "roave-backward-compatibility-check --format=${{ inputs.format }} --install-development-dependencies --from=${{ steps.from-tag.outputs.tag }} --to=${{ inputs.to }}"
