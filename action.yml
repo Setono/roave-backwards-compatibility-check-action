@@ -12,3 +12,7 @@ runs:
         -   name: "Install Backwards Compatibility Checker"
             shell: "bash"
             run: "composer global require --no-update roave/backward-compatibility-check && composer global update && composer global show | grep backward-compatibility-check"
+
+        -   name: "Check for BC breaks"
+            shell: "bash"
+            run: "vendor/bin/roave-backward-compatibility-check"
